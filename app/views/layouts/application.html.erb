@@ -7,20 +7,16 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<header class="navbar navbar-fixed-top navbar-default">
-  <div class="container">
-    <%= link_to "CJHackerz.Net", "", class: "btn btn-lg btn-success", id: "logo" %>
-    <div class="nav-item">
-      <%= link_to "link1", "", class: "btn btn-default btn-warning"%>
-      <%= link_to "link2", "", class: "btn btn-default btn-warning"%>
-      <%= link_to "link3", "", class: "btn btn-default btn-warning"%>
-      <%= link_to "link4", "", class: "btn btn-default btn-warning"%>
-    </div>
-  </div>
-</header>
+
+<!-- Navigation bar partial -->
+<%= render 'layouts/navbar' %>
+
 <div class="container">
 <%= yield %>
-<div class="footer">&copy; CJHackerz.Net 2016</div>
+
+<!-- Footer partial -->
+<%= render 'layouts/footer' %>
+
 </div>
 </body>
 </html>
