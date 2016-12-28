@@ -1,0 +1,195 @@
+  [1m[36m (21.1ms)[0m  [1mCREATE TABLE "chefs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "chefname" varchar, "email" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (16.6ms)[0m  CREATE TABLE "recipes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "summary" text, "description" text, "chef_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.2ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (14.6ms)[0m  CREATE  INDEX "index_recipes_on_chef_id" ON "recipes" ("chef_id")
+  [1m[36m (12.9ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (17.5ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36m (0.3ms)[0m  [1mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (17.4ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20161228161546')
+  [1m[36m (17.0ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20161228161145')[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36mFixture Delete (0.3ms)[0m  [1mDELETE FROM "recipes"[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO "recipes" ("name", "summary", "description", "chef_id", "created_at", "updated_at", "id") VALUES ('MyString', 'MyText', 'MyText', NULL, '2016-12-28 16:33:03', '2016-12-28 16:33:03', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO "recipes" ("name", "summary", "description", "chef_id", "created_at", "updated_at", "id") VALUES ('MyString', 'MyText', 'MyText', NULL, '2016-12-28 16:33:03', '2016-12-28 16:33:03', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM "chefs"
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at", "id") VALUES ('MyString', 'MyString', '2016-12-28 16:33:03', '2016-12-28 16:33:03', 980190962)[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at", "id") VALUES ('MyString', 'MyString', '2016-12-28 16:33:03', '2016-12-28 16:33:03', 298486374)
+  [1m[36m (13.7ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+-----------------------------------
+ChefTest: test_chef_should_be_valid
+-----------------------------------
+  [1m[36mChef Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('john@example.com') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+---------------------------------
+ChefTest: test_chefname_too_short
+---------------------------------
+  [1m[35mChef Exists (0.3ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('john@example.com') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+-------------------------------------------------
+ChefTest: test_email_should_be_valid_-_false_case
+-------------------------------------------------
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('@eee.com') LIMIT 1[0m
+  [1m[35mChef Exists (0.2ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('lol@eee,com') LIMIT 1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('lol,lolz@eee.com') LIMIT 1[0m
+  [1m[35mChef Exists (0.1ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('lolz@.com') LIMIT 1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('lolz@') LIMIT 1[0m
+  [1m[35mChef Exists (0.2ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('lolz@eee') LIMIT 1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('lolz@eee.') LIMIT 1[0m
+  [1m[35mChef Exists (0.2ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('lolz@eee+www.com') LIMIT 1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('lolz@eee_www_.com') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+-------------------------------------------
+ChefTest: test_email_should_not_be_too_long
+-------------------------------------------
+  [1m[35mChef Exists (0.2ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+--------------------------------
+ChefTest: test_chefname_too_long
+--------------------------------
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+-----------------------------------------
+ChefTest: test_chefname_should_be_present
+-----------------------------------------
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('john@example.com') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+--------------------------------------
+ChefTest: test_email_should_be_present
+--------------------------------------
+  [1m[35mChef Exists (0.2ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER(' ') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+---------------------------------------------
+ChefTest: test_email_address_should_be_unique
+---------------------------------------------
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mChef Exists (0.1ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('john@example.com') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["chefname", "john"], ["email", "john@example.com"], ["created_at", "2016-12-28 16:33:03.858478"], ["updated_at", "2016-12-28 16:33:03.858478"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('JOHN@EXAMPLE.COM') LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+------------------------------------------------
+ChefTest: test_email_should_be_valid_-_true_case
+------------------------------------------------
+  [1m[35mChef Exists (0.2ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('user@eee.com') LIMIT 1
+  [1m[36mChef Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('R_TDD-DS@eee.com') LIMIT 1[0m
+  [1m[35mChef Exists (0.1ms)[0m  SELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('user@example.com') LIMIT 1
+  [1m[36mChef Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('first.last@eem.au') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+--------------------------------------------
+WelcomeControllerTest: test_should_get_index
+--------------------------------------------
+Processing by WelcomeController#index as HTML
+  Rendered welcome/index.html.erb within layouts/application (3.3ms)
+  Rendered layouts/_navbar.html.erb (1.2ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 5981ms (Views: 5980.8ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+------------------------------------------
+RecipeTest: test_summary_should_be_present
+------------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:09.971373"], ["updated_at", "2016-12-28 16:33:09.971373"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+-----------------------------------------------
+RecipeTest: test_name_length_should_not_be_long
+-----------------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.015368"], ["updated_at", "2016-12-28 16:33:10.015368"]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.3ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+----------------------------------------------------
+RecipeTest: test_name_length_should_not_be_too_short
+----------------------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.023514"], ["updated_at", "2016-12-28 16:33:10.023514"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.3ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+------------------------------------------
+RecipeTest: test_chef_id_should_be_present
+------------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.030647"], ["updated_at", "2016-12-28 16:33:10.030647"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+---------------------------------------
+RecipeTest: test_name_should_be_present
+---------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.036399"], ["updated_at", "2016-12-28 16:33:10.036399"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+-------------------------------------------------------
+RecipeTest: test_summary_length_should_not_be_too_short
+-------------------------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.043049"], ["updated_at", "2016-12-28 16:33:10.043049"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+---------------------------------------------------
+RecipeTest: test_description_should_not_be_too_long
+---------------------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.049095"], ["updated_at", "2016-12-28 16:33:10.049095"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.3ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+---------------------------------------
+RecipeTest: test_recipe_should_be_valid
+---------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.055083"], ["updated_at", "2016-12-28 16:33:10.055083"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+---------------------------------------------------
+RecipeTest: test_description_sould_not_be_too_short
+---------------------------------------------------
+  [1m[35m (0.2ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.060148"], ["updated_at", "2016-12-28 16:33:10.060148"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+--------------------------------------------
+RecipeTest: test_description_must_be_present
+--------------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.065712"], ["updated_at", "2016-12-28 16:33:10.065712"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+------------------------------------------------------
+RecipeTest: test_summary_length_should_not_be_too_long
+------------------------------------------------------
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mChef Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "chefs" WHERE LOWER("chefs"."email") = LOWER('bob@example.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "chefs" ("chefname", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["chefname", "bob"], ["email", "bob@example.com"], ["created_at", "2016-12-28 16:33:10.071634"], ["updated_at", "2016-12-28 16:33:10.071634"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.3ms)[0m  rollback transaction
