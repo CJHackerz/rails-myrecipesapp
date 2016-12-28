@@ -1,5 +1,7 @@
 == README
 
+[![Heroku](http://heroku-badge.herokuapp.com/?app=rails-myrecipesapp&style=flat)]
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
