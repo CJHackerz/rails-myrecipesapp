@@ -1,30 +1,19 @@
-== README
+## README.md
 
-[![Heroku](http://heroku-badge.herokuapp.com/?app=rails-myrecipesapp&style=flat)]
+Status: ![Heroku](http://heroku-badge.herokuapp.com/?app=rails-myrecipesapp&style=flat)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Things has been done so far in course
 
-Things you may want to cover:
+* Routes Defined
 
-* Ruby version
+* Home Page Ready
 
-* System dependencies
+* Generated models for Chef and Recipe
 
-* Configuration
+* Database tables defined
 
-* Database creation
+* Association Chef=> has_many :recipes Recipe=> belongs_to :chef
 
-* Database initialization
+* TDD Intiaized
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+* Validations enforced
